@@ -42,65 +42,70 @@ public class BoardDao {
 		return connection;
 	}
 
+
+	public List<BoardVo> getList() {
+	
+//		try {
+//			Connection conn = getConnection();
+//			Statement stmt = conn.createStatement();
+//
+//			String sql =
+//					"   select a.no," +
+//							"          a.title," +
+//							"          a.member_no," +
+//							"          b.name as member_name," +
+//							"          a.view_cnt," +
+//							"          to_char(a.reg_date, 'yyyy-mm-dd hh:MM:ss')" +
+//							"     from board a," +
+//							"          member b" +
+//							"    where a.member_no = b.no" +
+//							" order by a.reg_date desc";
+//
+//			ResultSet rs = stmt.executeQuery( sql );
+//			while( rs.next() ){
+//				Long no = rs.getLong( 1 );
+//				String title = rs.getString( 2 );
+//				Long memberNo = rs.getLong( 3 );
+//				String memberName = rs.getString( 4 );
+//				int viewCount = rs.getInt( 5 );
+//				String regDate = rs.getString( 6 );
+//
+//				BoardVo vo = new BoardVo();
+//				vo.setNo(no);
+//				vo.setTitle(title);
+//				vo.setMemberNo(memberNo);
+//				vo.setMemberName(memberName);
+//				vo.setViewCount(viewCount);
+//				vo.setRegdate(regDate);
+//
+//				list.add( vo );
+//			}
+//
+//			rs.close();
+//			stmt.close();
+//			conn.close();
+//
+//		}catch( SQLException ex ) {
+//			System.out.println( "SQL Error:" + ex );
+//		}
+		List<BoardVo> list = sqlSession.selectList( "board.getList" );
+		return list;
+	}
+
+	
+	
+
+	public void increaseViewCount( Long no ) {
+		sqlSession.update("board.increaseViewCount", no);
+	}
+	
 	public BoardVo get( Long no ) {
 		BoardVo boardVo = 	sqlSession.selectOne("board.get", no);
 
 		return boardVo;
 	}
 
-	public void increaseViewCount( Long no ) {
-		sqlSession.update("board.increaseViewCount", no);
-	}
-
-	public List<BoardVo> getList() {
-		List<BoardVo> list = new ArrayList<BoardVo>();
-		try {
-			Connection conn = getConnection();
-			Statement stmt = conn.createStatement();
-
-			String sql =
-					"   select a.no," +
-							"          a.title," +
-							"          a.member_no," +
-							"          b.name as member_name," +
-							"          a.view_cnt," +
-							"          to_char(a.reg_date, 'yyyy-mm-dd hh:MM:ss')" +
-							"     from board a," +
-							"          member b" +
-							"    where a.member_no = b.no" +
-							" order by a.reg_date desc";
-
-			ResultSet rs = stmt.executeQuery( sql );
-			while( rs.next() ){
-				Long no = rs.getLong( 1 );
-				String title = rs.getString( 2 );
-				Long memberNo = rs.getLong( 3 );
-				String memberName = rs.getString( 4 );
-				int viewCount = rs.getInt( 5 );
-				String regDate = rs.getString( 6 );
-
-				BoardVo vo = new BoardVo();
-				vo.setNo(no);
-				vo.setTitle(title);
-				vo.setMemberNo(memberNo);
-				vo.setMemberName(memberName);
-				vo.setViewCount(viewCount);
-				vo.setRegdate(regDate);
-
-				list.add( vo );
-			}
-
-			rs.close();
-			stmt.close();
-			conn.close();
-
-		}catch( SQLException ex ) {
-			System.out.println( "SQL Error:" + ex );
-		}
-
-		return list;
-	}
-
+	
 	public void update( BoardVo vo ) {
 		sqlSession.update("board.update", vo);	
 	}

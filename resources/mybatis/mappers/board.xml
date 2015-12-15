@@ -3,29 +3,37 @@
 
 <mapper namespace="board">
     
+    
+    <select id = "getList" resultType = "BoardVo">
+        <![CDATA[
+        select a.no,
+        a.title ,
+        a.member_no as memberNo, 
+        b.name as memberName,
+        a.view_cnt as viewCount,
+        to_char(a.reg_date, 'yyyy-mm-dd hh:MM:ss') as Regdate
+        from board a,
+        member b
+        where a.member_no = b.no
+        order by a.reg_date desc
+        
+        
+        ]]>
+        
+        
+    </select>
+    
+   
+    
     <select id = "get" 
         resultType ="BoardVo"
         parameterType="Long">
         <![CDATA[
-            
-     
-     select no, title, content, member_no
-							from board
-							where no= #{no}
-        ]]>
         
-    </select>
-    
-    
-    
-    
-    <select id = "getList" 
-        resultType ="GuestBookVo"
-        parameterType="GuestBookVo">
-        <![CDATA[
         
-        select no, name, password, message, to_char(reg_date,'YYYY-MM-DD HH:MI:SS')as reg_date 
-        from guestbook ORDER BY no desc"
+        select no, title, content, member_no
+        from board
+        where no= #{no}
         ]]>
         
     </select>

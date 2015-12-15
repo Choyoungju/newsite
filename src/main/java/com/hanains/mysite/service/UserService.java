@@ -22,4 +22,8 @@ public class UserService {
 		return authUser;
 	}
 	
+	
+	public void update(UserVo vo){
+		userDao.update(vo);
+	}
 }

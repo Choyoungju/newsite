@@ -3,16 +3,16 @@
 
 <mapper namespace="guestbook">
     
-    <select id = "getList" 
-        resultType ="GuestBookVo"
-        parameterType="GuestBookVo">
+
+    
+    <select id="select" resultType="GuestbookVo">
         <![CDATA[
-            
-select no, name, password, message, to_char(reg_date,'YYYY-MM-DD HH:MI:SS')as reg_date 
-     from guestbook ORDER BY no desc"
-        ]]>
-        
+		  select no, name, message, to_char( reg_date, 'yyyy-MM-dd hh:mi:ss' ) as reg_date
+		    from guestbook
+	    order by no desc		
+		]]>
     </select>
+    
     
     
     <insert id ="insert" parameterType="GuestBookVo">
@@ -32,7 +32,7 @@ select no, name, password, message, to_char(reg_date,'YYYY-MM-DD HH:MI:SS')as re
         
         <![CDATA[
         delete from guestbook 
-        where no = #{no}  and password=#{password}";
+        where no = #{no}  and password=#{password}
         
         ]]>
         

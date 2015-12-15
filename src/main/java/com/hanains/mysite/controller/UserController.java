@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,7 +20,7 @@ public class UserController {
 
 	@RequestMapping("/joinform")
 	public String joinform(){
-		System.out.println("Hello world");
+		
 		return "/user/joinform";
 	}
 	
@@ -27,6 +28,12 @@ public class UserController {
 	public String loginform(){
 
 		return "/user/loginform";
+	}
+	
+	@RequestMapping("/modifyform")
+	public String modifyform(){
+
+		return "/user/modifyform";
 	}
 	
 	
@@ -60,5 +67,23 @@ public class UserController {
 		session.invalidate();
 		return "redirect:/";
 	}
+	
+
+	@RequestMapping( "/update" )
+	public String modify(  @ModelAttribute UserVo userVo ) {
+		
+		userService.update( userVo );
+		System.out.println("흠");
+		return "redirect:/";
+	}
+	
+//	@RequestMapping( "/modify" )
+//	public String modify(  UserVo authUser, @ModelAttribute UserVo userVo ) {
+//		userVo.setNo( authUser.getNo() );
+//		userService.update( userVo );
+//		System.out.println("흠");
+//		return "redirect:/";
+//	}
+	
 	
 }

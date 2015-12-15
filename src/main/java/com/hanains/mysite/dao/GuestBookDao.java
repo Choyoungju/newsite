@@ -24,71 +24,79 @@ public class GuestBookDao {
 	
 	
 	
-	public List<GuestBookVo> getList(){
-		List<GuestBookVo> list = new ArrayList<GuestBookVo>();
-		Connection connection = null;
-		Statement stmt= null;
-		ResultSet rs= null;
-		
-		try{
-			//1.드라이버 로딩(클래스 로딩)
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			//2.DB연결
-			String dbUrl="jdbc:oracle:thin:@localhost:1521:xe";
-			connection = DriverManager.getConnection(dbUrl,"webdb","webdb");
-			
-			//3.statement 생성
-			stmt = connection.createStatement();
-			
-			String sql="select no, name, password, message, to_char(reg_date,'YYYY-MM-DD HH:MI:SS')as reg_date from guestbook ORDER BY no desc";
-			rs = stmt.executeQuery(sql);
-			
-			while(rs.next()){
-				Long no=rs.getLong(1);
-				String name=rs.getString(2);
-				String password=rs.getString(3);
-				String message = rs.getString(4);
-				String reg_date = rs.getString(5);
-				
-				GuestBookVo vo= new GuestBookVo();
-				vo.setNo(no);
-				vo.setName(name);
-				vo.setPassword(password);
-				vo.setMessage(message);
-				vo.setReg_date(reg_date);
-				
-				list.add(vo);
-				
-				
-			
-			}
-			
-			
-			
-		}catch(ClassNotFoundException ex){
-			System.out.println("드라이버 연결 오류.:"+ex);
-		}catch(SQLException ex){
-			ex.printStackTrace();
-		}finally{
-			
-			try{
-				if(rs != null){
-					rs.close();
-				}
-				if(stmt != null){
-					stmt.close();
-				}
-				if(connection != null){
-					connection.close();
-				}
-				
-			}catch(SQLException ex){
-				ex.printStackTrace();
-			}
-		}
+//	public List<GuestBookVo> getList(){
+//		
+//
+//		
+//		List<GuestBookVo> list = new ArrayList<GuestBookVo>();
+//		Connection connection = null;
+//		Statement stmt= null;
+//		ResultSet rs= null;
+//		
+//		try{
+//			//1.드라이버 로딩(클래스 로딩)
+//			Class.forName("oracle.jdbc.driver.OracleDriver");
+//			//2.DB연결
+//			String dbUrl="jdbc:oracle:thin:@localhost:1521:xe";
+//			connection = DriverManager.getConnection(dbUrl,"webdb","webdb");
+//			
+//			//3.statement 생성
+//			stmt = connection.createStatement();
+//			
+//			String sql="select no, name, password, message, to_char(reg_date,'YYYY-MM-DD HH:MI:SS')as reg_date from guestbook ORDER BY no desc";
+//			rs = stmt.executeQuery(sql);
+//			
+//			while(rs.next()){
+//				Long no=rs.getLong(1);
+//				String name=rs.getString(2);
+//				String password=rs.getString(3);
+//				String message = rs.getString(4);
+//				String reg_date = rs.getString(5);
+//				
+//				GuestBookVo vo= new GuestBookVo();
+//				vo.setNo(no);
+//				vo.setName(name);
+//				vo.setPassword(password);
+//				vo.setMessage(message);
+//				vo.setReg_date(reg_date);
+//				
+//				list.add(vo);
+//				
+//				
+//			
+//			}
+//			
+//			
+//			
+//		}catch(ClassNotFoundException ex){
+//			System.out.println("드라이버 연결 오류.:"+ex);
+//		}catch(SQLException ex){
+//			ex.printStackTrace();
+//		}finally{
+//			
+//			try{
+//				if(rs != null){
+//					rs.close();
+//				}
+//				if(stmt != null){
+//					stmt.close();
+//				}
+//				if(connection != null){
+//					connection.close();
+//				}
+//				
+//			}catch(SQLException ex){
+//				ex.printStackTrace();
+//			}
+//		}
+//		return list;
+//	}
+	
+	
+	public List<GuestBookVo> getList() {
+		List<GuestBookVo> list = sqlSession.selectList( "guestbook.select" );
 		return list;
 	}
-	
 	
 	public void insert(GuestBookVo vo){
 		
