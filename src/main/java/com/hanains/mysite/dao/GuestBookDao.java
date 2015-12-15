@@ -19,8 +19,8 @@ import com.hanains.mysite.vo.GuestBookVo;
 @Repository
 public class GuestBookDao {
 	
-//	@Autowired
-//	private SqlSession sqlSession;
+	@Autowired
+	private SqlSession sqlSession;
 	
 	
 	
@@ -90,91 +90,14 @@ public class GuestBookDao {
 	}
 	
 	
-	public int insert(GuestBookVo vo){
-		Connection connection =null;
-		PreparedStatement pstmt=null;
+	public void insert(GuestBookVo vo){
 		
-		int count = 0;
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			String dbUrl="jdbc:oracle:thin:@localhost:1521:xe";
-			connection = DriverManager.getConnection(dbUrl,"webdb","webdb");
-			
-			//3.statement 준비
-			String sql="insert into guestbook values(GUESTBOOK_SEQ.nextval,?,?,?,SYSDATE)";
-			pstmt = connection.prepareStatement(sql);
-			
-			//4.binding
-			pstmt.setString(1,vo.getName());
-			pstmt.setString(2, vo.getPassword());
-			pstmt.setString(3, vo.getMessage());
-			
-			//5.SQL실행
-			pstmt.executeUpdate();
-			
-			
-			
-		}catch(ClassNotFoundException ex){
-			System.out.println("드라이버 로딩 실패 : "+ex);
-		}catch(SQLException ex){
-			System.out.println("SQL error : "+ ex);
-		}
-		finally{
-			try{
-				if(pstmt !=null){
-					pstmt.close();
-				}
-				if(connection != null){
-					connection.close();
-				}
-			}catch(SQLException ex){
-				ex.printStackTrace();
-			}
-		}
-		return count;
+		sqlSession.insert("guestbook.insert",vo);
 	}
 	
 	
 	
 	public void delete(GuestBookVo vo){
-		Connection connection = null;
-		PreparedStatement pstmt= null;
-		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			String dbUrl="jdbc:oracle:thin:@localhost:1521:xe";
-			connection = DriverManager.getConnection(dbUrl,"webdb","webdb");
-			
-			//3.statement 준비
-			String sql="delete from guestbook where no = ? and password=?";
-			pstmt = connection.prepareStatement(sql);
-			
-			//4.binding
-			pstmt.setLong(1,vo.getNo());
-			pstmt.setString(2,vo.getPassword());
-			
-			
-			
-			//5.SQL 실행
-			pstmt.executeUpdate();
-			
-			
-		}catch(ClassNotFoundException ex){
-			System.out.println("드라이버 로딩 실패: "+ex);
-		}catch(SQLException ex){
-			System.out.println("에러 : "+ex);
-		}finally{
-			try{
-				if(pstmt != null){
-					pstmt.close();
-				}
-				if(connection != null){
-					connection.close();
-				}
-				
-			}catch(SQLException ex){
-				ex.printStackTrace();
-			}
-		}
+		sqlSession.delete("guestbook.delete", vo);
 	}
 }

@@ -13,11 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-
-
-
-
-
 import com.hanains.mysite.dao.GuestBookDao;
 import com.hanains.mysite.service.GuestbookService;
 import com.hanains.mysite.service.UserService;

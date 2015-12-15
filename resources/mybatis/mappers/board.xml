@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+    
+    <select id = "get" 
+        resultType ="BoardVo"
+        parameterType="Long">
+        <![CDATA[
+            
+     
+     select no, title, content, member_no
+							from board
+							where no= #{no}
+        ]]>
+        
+    </select>
+    
+    
+    
+    
+    <select id = "getList" 
+        resultType ="GuestBookVo"
+        parameterType="GuestBookVo">
+        <![CDATA[
+        
+        select no, name, password, message, to_char(reg_date,'YYYY-MM-DD HH:MI:SS')as reg_date 
+        from guestbook ORDER BY no desc"
+        ]]>
+        
+    </select>
+    
+    
+    <insert id ="insert" parameterType="BoardVo">
+        
+        <![CDATA[
+        insert
+        into board
+        values ( board_no_seq.nextval, #{title}, #{content}, #{memberNo}, 0, SYSDATE )
+        
+        ]]>
+        
+    </insert>
+    
+    
+    <delete id = "delete" parameterType = "BoardVo">
+        
+        <![CDATA[
+        delete from board where no = #{no}
+        
+        ]]>
+        
+    </delete>
+    
+    <update id = "update" parameterType="BoardVo">        
+        <![CDATA[
+        update board
+        set title= #{title},
+        content= #{content}
+        where no= #{no}		
+        ]]>
+    </update>
+    
+    <update id= "increaseViewCount" parameterType="Long">
+        <![CDATA[
+        update board
+        set view_cnt = view_cnt + 1		
+        where no= #{no}
+        ]]>
+    </update>
+    
+    
+    
+</mapper>

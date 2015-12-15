@@ -22,9 +22,9 @@ public class GuestbookService {
 	@Autowired
 	private GuestBookDao guestbookDao;
 	
-	public Boolean write( GuestBookVo vo ) {
-		int count = guestbookDao.insert( vo );
-		return  count == 1;
+	public void write( GuestBookVo vo ) {
+		guestbookDao.insert( vo );
+		
 	}
 	
 
