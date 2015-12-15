@@ -27,11 +27,32 @@ public class BoardController {
 	
 	@RequestMapping( "/modify/{no}" )
 	public String modify( @PathVariable( "no" ) Long no, Model model ) {
-		BoardVo vo = boardService.viewBoard( no );
-		model.addAttribute( "vo", vo );
+		BoardVo vo = boardService.view( no );
+		model.addAttribute( "board", vo );
 		return "/board/modify";
 	}
 
+	@RequestMapping("/write")
+	public String insert( ){
+		
+		return "/board/write";
+		
+	}
+	
+	@RequestMapping("/insert")
+	public String join(@ModelAttribute BoardVo vo){
+		boardService.write(vo);
+		return "redirect:/board/";
+	}
+	
+	@RequestMapping("/update")
+	public String update(@ModelAttribute BoardVo vo){
+		boardService.update(vo);
+		return "redirect:/board/";
+	}
+	
+	
+	
 	
 	@RequestMapping( "" )
 	public String list( Model model ) {
@@ -43,13 +64,13 @@ public class BoardController {
 
 	@RequestMapping( "/delete/{no}" )
 	public String delete( UserVo authUser, @PathVariable( "no" ) Long no ) {
-		boardService.deleteBoard( no, authUser.getNo() );
+		boardService.delete( no, authUser.getNo() );
 		return "redirect:/board";
 	}	
 	
 	@RequestMapping( "/view/{no}" )
 	public String view( @PathVariable( "no" ) Long no, Model model ) {
-		BoardVo vo = boardService.viewBoard( no );
+		BoardVo vo = boardService.view( no );
 		model.addAttribute( "board", vo );
 		return "/board/view";
 	}

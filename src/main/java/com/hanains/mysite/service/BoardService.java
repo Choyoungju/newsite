@@ -22,19 +22,19 @@ public class BoardService {
 		return list;
 	}
 	
-	public void writeBoard( BoardVo vo ){
+	public void write( BoardVo vo ){
 		boardDao.insert( vo );
 	}
 	
-	public void updateBoard( BoardVo vo ){
+	public void update( BoardVo vo ){
 		boardDao.update( vo );
 	}	
 
-	public void deleteBoard( Long no, Long memberNo ){
+	public void delete( Long no, Long memberNo ){
 		boardDao.delete(memberNo);
 	}	
 
-	public BoardVo viewBoard( Long no ){
+	public BoardVo view( Long no ){
 		BoardVo vo = boardDao.get( no );
 		boardDao.increaseViewCount(no);
 		return vo;

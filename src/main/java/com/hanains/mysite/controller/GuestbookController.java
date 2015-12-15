@@ -40,28 +40,29 @@ public class GuestbookController {
 		return "/guestbook/list";
 	}
 	
-	@RequestMapping("/insert")
-	public String insert(@ModelAttribute GuestBookVo vo, Model model){
-		guestbookService.insert(vo);
-		model.addAttribute ("vo",vo);
+
+	
+	@RequestMapping( "/insert" )
+	public String insert( @ModelAttribute GuestBookVo vo ) {
+		guestbookService.write( vo );
+
 		return "redirect:/guestbook";
 	}
 	
-	@RequestMapping("/deleteform")
-	public String loginform(){
 
-		return "/guestbook/delete";
+	
+	@RequestMapping("/deleteform")
+	public String deleteform(){
+		return "/guestbook/deleteform";
 	}
 	
+	@RequestMapping("/delete")
+	public String delete(@ModelAttribute GuestBookVo vo){
+		guestbookService.delete(vo);
+		return "redirect:/guestbook/";
+	}
 
 
-//	
-//	@RequestMapping( "/deleteform/{no}" )
-//	public String deleteform( @PathVariable( "no" ) Long no, Model model ) {
-//		model.addAttribute( "no", no );
-//		return "/guestbook/deleteform" ;
-//	}
-//	
 
 		
 		

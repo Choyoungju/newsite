@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hanains.mysite.vo.GuestBookVo;
@@ -16,6 +18,10 @@ import com.hanains.mysite.vo.GuestBookVo;
 
 @Repository
 public class GuestBookDao {
+	
+//	@Autowired
+//	private SqlSession sqlSession;
+	
 	
 	
 	public List<GuestBookVo> getList(){
@@ -34,7 +40,7 @@ public class GuestBookDao {
 			//3.statement 생성
 			stmt = connection.createStatement();
 			
-			String sql="select no, name, password, message, to_char(reg_date,'YYYY-MM-DD HH:MI:SS') from guestbook ORDER BY no desc";
+			String sql="select no, name, password, message, to_char(reg_date,'YYYY-MM-DD HH:MI:SS')as reg_date from guestbook ORDER BY no desc";
 			rs = stmt.executeQuery(sql);
 			
 			while(rs.next()){
@@ -84,9 +90,11 @@ public class GuestBookDao {
 	}
 	
 	
-	public void insert(GuestBookVo vo){
+	public int insert(GuestBookVo vo){
 		Connection connection =null;
 		PreparedStatement pstmt=null;
+		
+		int count = 0;
 		try{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			String dbUrl="jdbc:oracle:thin:@localhost:1521:xe";
@@ -123,6 +131,7 @@ public class GuestBookDao {
 				ex.printStackTrace();
 			}
 		}
+		return count;
 	}
 	
 	
@@ -143,6 +152,8 @@ public class GuestBookDao {
 			//4.binding
 			pstmt.setLong(1,vo.getNo());
 			pstmt.setString(2,vo.getPassword());
+			
+			
 			
 			//5.SQL 실행
 			pstmt.executeUpdate();

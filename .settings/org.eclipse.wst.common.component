@@ -2,6 +2,7 @@
     <wb-module deploy-name="tempsite">
         <wb-resource deploy-path="/" source-path="/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/resources"/>
         <property name="context-root" value="tempsite"/>
         <property name="java-output-path" value="/tempsite/build/classes"/>
     </wb-module>
