@@ -3,6 +3,15 @@
 
 <mapper namespace="user">
     
+    <select id = "selectByEmail" parameterType = "string" resultType = "UserVo">
+    <![CDATA[
+    select no, name, email, gender
+    from member
+   where email = #{email} ]]>
+    
+    </select>
+    
+    
     <select id = "getbyEmailAndPassword" 
         resultType ="UserVo"
         parameterType="UserVo">

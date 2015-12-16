@@ -26,4 +26,10 @@ public class UserService {
 	public void update(UserVo vo){
 		userDao.update(vo);
 	}
+	
+	
+	public UserVo getUser(String email){
+		UserVo userVo = userDao.get(email);
+		return userVo;
+	}
 }

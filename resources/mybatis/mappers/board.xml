@@ -4,6 +4,37 @@
 <mapper namespace="board">
     
     
+    <select id="selectList" resultType="BoardVo" parameterType="map">
+        <![CDATA[
+        SELECT * 
+        FROM ( SELECT rownum as rnum,
+        C.* 
+        FROM ( SELECT A.no, A.title,
+        A.member_no as memberNo, 
+        B.name as memberName,
+        A.view_cnt as viewCount,
+        A.depth, 
+        to_char( A.reg_date, 'yyyy-mm-dd hh:mi:ss' ) as reg_date 
+        FROM board A, 
+        member B
+        WHERE A.member_no as memberNo= B.no
+        ]]>
+        <if test="searchKeyword != ''">
+            <![CDATA[				     
+            AND ( A.title LIKE '%${searchKeyword }%' OR A.content LIKE '%${searchKeyword }%' )
+            ]]>
+        </if>				     
+        <![CDATA[				     
+        ORDER BY group_no DESC,  order_no  ASC ) C )
+        WHERE ( #{page } - 1 ) * #{pageSize } + 1 <= rnum AND rnum <=  #{page } * #{pageSize }
+        ]]>	
+    </select>
+    
+    
+    
+    
+    
+    
     <select id = "getList" resultType = "BoardVo">
         <![CDATA[
         select a.no,
@@ -23,7 +54,7 @@
         
     </select>
     
-   
+    
     
     <select id = "get" 
         resultType ="BoardVo"

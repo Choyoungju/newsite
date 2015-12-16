@@ -33,7 +33,12 @@ public class BoardController {
 	}
 
 	@RequestMapping("/write")
-	public String insert( ){
+	public String insert( HttpSession session){
+		
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		if(authUser == null){
+			return "redirect:/user/loginform";
+		}
 		
 		return "/board/write";
 		
