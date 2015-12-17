@@ -1,13 +1,10 @@
 package com.hanains.mysite.controller;
-
 import java.io.FileOutputStream;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,86 +14,101 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-
-
 import com.hanains.mysite.annotation.Auth;
+import com.hanains.mysite.annotation.AuthUser;
 import com.hanains.mysite.service.BoardService;
-import com.hanains.mysite.service.UserService;
 import com.hanains.mysite.vo.BoardVo;
-import com.hanains.mysite.vo.GuestBookVo;
 import com.hanains.mysite.vo.UserVo;
 
+
 @Controller
-@RequestMapping("/board")
+@RequestMapping( "/board" )
 public class BoardController {
-	
-
-
 	@Autowired
 	private BoardService boardService;
-	
 	
 	private static final Log LOG = LogFactory.getLog( BoardController.class );
 	private static final String SAVE_PATH = "/temp/";
 	
-	@Auth
-	@RequestMapping( "/modify/{no}" )
-	public String modify( @PathVariable( "no" ) Long no, Model model ) {
-		BoardVo vo = boardService.view( no );
-		model.addAttribute( "board", vo );
-		return "/board/modify";
-	}
-
-	@Auth
-	@RequestMapping("/write")
-	public String insert( HttpSession session){
-//		
-//		UserVo authUser = (UserVo) session.getAttribute("authUser");
-//		if(authUser == null){
-//			return "redirect:/user/loginform";
-//		}
-		
-		return "/board/write";
-		
-	}
-	
-	@RequestMapping("/insert")
-	public String join(@ModelAttribute BoardVo vo){
-		boardService.write(vo);
-		return "redirect:/board/upload";
-	}
-	
-	@Auth
-	@RequestMapping("/update")
-	public String update(@ModelAttribute BoardVo vo){
-		boardService.update(vo);
-		return "redirect:/board/";
-	}
-	
-	
-	
-	
+	// 리스트 요청
 	@RequestMapping( "" )
-	public String list( Model model ) {
-		List<BoardVo> list = boardService.list();
-		model.addAttribute( "list", list );
+	public String list( 
+		@RequestParam( value="kw", required = true, defaultValue = "" ) String searchKeyword,
+		@RequestParam( value="p", required = true, defaultValue = "1" ) Long page,
+		Model model ) {
+		
+		Map<String, Object> map = boardService.listBoard( searchKeyword, page );
+		model.addAttribute( "listData", map );
+		
 		return "/board/list";
 	}
 	
+	// 글쓰기 폼 요청
+	@Auth
+	@RequestMapping( "/write" )
+	public String write() {
+		// 로그인 사용자 체크
+		return "/board/write";
+	}
+	
+	// 답글달기 폼 요청
+	@Auth	
+	@RequestMapping( "/reply/{no}" )
+	public String reply( @PathVariable( "no" ) Long no, Model model ) {
+		BoardVo vo = boardService.viewBoard( no );
+		model.addAttribute( "vo", vo );
+		return "/board/write";
+	}
+	
+	
+	// 글(새글/답글) 등록 요청
+	@Auth	
+	@RequestMapping( "/insert" )
+	public String insert( @AuthUser UserVo authUser, @ModelAttribute BoardVo vo ) {
+		
+		System.out.println( authUser );
+		vo.setMemberNo( authUser.getNo() );
+		boardService.writeBoard( vo );
+		
+		return "redirect:/board/upload";
+	}
+	
+	// 글(새글/답글) 수정폼 요청
+	@Auth
+	@RequestMapping( "/modify/{no}" )
+	public String modify( @PathVariable( "no" ) Long no, Model model ) {
+		BoardVo vo = boardService.viewBoard( no );
+		model.addAttribute( "vo", vo );
+		return "/board/modify";
+	}
+	
+	// 글(새글/답글) 수정 요청
+	@Auth
+	@RequestMapping( "/update" )
+	public String update( @AuthUser UserVo authUser, @ModelAttribute BoardVo vo ) {
+		vo.setMemberNo( authUser.getNo() );
+		boardService.updateBoard( vo );
+		return "redirect:/board";
+	}
+	
+	// 글(새글/답글) 삭제 요청
 	@Auth
 	@RequestMapping( "/delete/{no}" )
-	public String delete( UserVo authUser, @PathVariable( "no" ) Long no ) {
-		boardService.delete( no, authUser.getNo() );
+	public String delete( @AuthUser UserVo authUser, @PathVariable( "no" ) Long no ) {
+		boardService.deleteBoard( no, authUser.getNo() );
 		return "redirect:/board";
 	}	
 	
-	@Auth
+	// 글(새글/답글) 보기 요청
 	@RequestMapping( "/view/{no}" )
 	public String view( @PathVariable( "no" ) Long no, Model model ) {
-		BoardVo vo = boardService.view( no );
-		model.addAttribute( "board", vo );
+		BoardVo vo = boardService.viewBoard( no );
+		model.addAttribute( "vo", vo );
 		return "/board/view";
 	}
+	
+	
+	
 	
 	@RequestMapping( "/upload" )
 	public String upload(  @RequestParam( "uploadFile" ) MultipartFile multipartFile, Model model, @ModelAttribute BoardVo vo) {
@@ -130,7 +142,7 @@ public class BoardController {
 	       
 		}
 		
-		boardService.write(vo);
+		boardService.writeBoard(vo);
         return "redirect:/board/";
 	}
 	
@@ -168,9 +180,5 @@ public class BoardController {
         
         return fileName;
 	}
-
-
-
-	
 	
 }

@@ -22,7 +22,7 @@
 
 					<tr>
 						<td class="label">제목</td>
-						<td>${board.title }</td>
+						<td>${vo.title }</td>
 					</tr>
 					<tr>
  
@@ -30,7 +30,7 @@
 						<td class="label">내용</td>
 						<td>
 							<div class="view-content">
-								${fn:replace( board.content, newLine, '<br>' ) }	
+								${fn:replace( vo.content, newLine, '<br>' ) }	
 							</div>
 						</td>
 					</tr>
@@ -44,7 +44,10 @@
 				</table>
 				<div class="bottom">
 					<a href="${pageContext.request.contextPath}/board/">글목록</a>
-					<a href="${pageContext.request.contextPath}/board/modify/${board.no }">글수정</a>
+					<a href="${pageContext.request.contextPath}/board/modify/${vo.no }">글수정</a>
+					<c:if test='${not empty authUser }'>
+						<a href="${pageContext.request.contextPath}/board/reply/${vo.no }">답글</a>
+					</c:if>
 				</div>
 			</div>
 		</div>

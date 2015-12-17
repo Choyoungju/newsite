@@ -2,87 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board">
-    
-    
-    <select id="selectList" resultType="BoardVo" parameterType="map">
-        <![CDATA[
-        SELECT * 
-        FROM ( SELECT rownum as rnum,
-        C.* 
-        FROM ( SELECT A.no, A.title,
-        A.member_no as memberNo, 
-        B.name as memberName,
-        A.view_cnt as viewCount,
-        A.depth, 
-        to_char( A.reg_date, 'yyyy-mm-dd hh:mi:ss' ) as reg_date 
-        FROM board A, 
-        member B
-        WHERE A.member_no as memberNo= B.no
-        ]]>
-        <if test="searchKeyword != ''">
-            <![CDATA[				     
-            AND ( A.title LIKE '%${searchKeyword }%' OR A.content LIKE '%${searchKeyword }%' )
-            ]]>
-        </if>				     
-        <![CDATA[				     
-        ORDER BY group_no DESC,  order_no  ASC ) C )
-        WHERE ( #{page } - 1 ) * #{pageSize } + 1 <= rnum AND rnum <=  #{page } * #{pageSize }
-        ]]>	
-    </select>
-    
-    
-    
-    
-    
-    
-    <select id = "getList" resultType = "BoardVo">
-        <![CDATA[
-        select a.no,
-        a.title ,
-        a.member_no as memberNo, 
-        b.name as memberName,
-        a.view_cnt as viewCount,
-        to_char(a.reg_date, 'yyyy-mm-dd hh:MM:ss') as Regdate
-        from board a,
-        member b
-        where a.member_no = b.no
-        order by a.reg_date desc
-        
-        
-        ]]>
-        
-        
-    </select>
-    
-    
-    
-    <select id = "get" 
-        resultType ="BoardVo"
-        parameterType="Long">
-        <![CDATA[
-        
-        
-        select no, title, content, member_no
-        from board
-        where no= #{no}
-        ]]>
-        
-    </select>
-    
-    
-   <!--  <insert id ="insert" parameterType="BoardVo">
-        
-        <![CDATA[
-        insert
-        into board
-        values ( board_no_seq.nextval, #{title}, #{content}, #{memberNo}, 0, SYSDATE )
-        
-        ]]>
-        
-    </insert>
-    -->
-    
-    <insert id="insert" parameterType="BoardVo">
+
+	<insert id="insert" parameterType="BoardVo">
 		<![CDATA[
 		insert
 		  into board
@@ -92,7 +13,7 @@
 				<![CDATA[
 				values ( board_no_seq.nextval, #{title }, #{content }, #{memberNo }, 0, nvl( ( select max( group_no ) from board ), 0) + 1, 1, 1, SYSDATE )
 				]]>			 
-			</when>	
+			</when>
 			<otherwise>
 				<![CDATA[
 				values ( board_no_seq.nextval, #{title }, #{content }, #{memberNo }, 0, #{groupNo }, #{orderNo } + 1, #{depth } + 1, SYSDATE )
@@ -100,33 +21,79 @@
 			</otherwise>
 		</choose>
 	</insert>
-    
-    <delete id = "delete" parameterType = "BoardVo">
-        
-        <![CDATA[
-        delete from board where no = #{no}
-        
-        ]]>
-        
-    </delete>
-    
-    <update id = "update" parameterType="BoardVo">        
-        <![CDATA[
-        update board
-        set title= #{title},
-        content= #{content}
-        where no= #{no}		
-        ]]>
-    </update>
-    
-    <update id= "increaseViewCount" parameterType="Long">
-        <![CDATA[
-        update board
-        set view_cnt = view_cnt + 1		
-        where no= #{no}
-        ]]>
-    </update>
-    
-    
-    
+	
+	<select id="selectList" resultType="BoardVo" parameterType="map">
+		<![CDATA[
+		SELECT * 
+		  FROM ( SELECT rownum as rnum, C.* 
+				   FROM ( SELECT A.no, A.title, A.member_no as memberNo, B.name as memberName, A.view_cnt as viewCount, A.depth, to_char( A.reg_date, 'yyyy-mm-dd hh:mi:ss' ) as regDate 
+						    FROM board A, member B
+						   WHERE A.member_no = B.no
+		]]>
+		<if test="searchKeyword != ''">
+			<![CDATA[				     
+						     AND ( A.title LIKE '%${searchKeyword }%' OR A.content LIKE '%${searchKeyword }%' )
+			]]>
+		</if>				     
+		<![CDATA[				     
+						ORDER BY group_no DESC,  order_no  ASC ) C )
+	     WHERE ( #{page } - 1 ) * #{pageSize } + 1 <= rnum AND rnum <=  #{page } * #{pageSize }
+		]]>	
+	</select>
+	
+	<select id="selectCount" resultType="long" parameterType="map">
+		<![CDATA[
+		select count(*) 
+		  from board
+		]]>
+		<if test="searchKeyword != ''">
+			<![CDATA[				     
+			 where ( title like '%${searchKeyword }%' or content like '%${searchKeyword }%' )
+			]]>
+		</if>		
+	</select>
+		
+	<select id="selectByNo" resultType="BoardVo" parameterType="long">
+		<![CDATA[
+		select no, title, content, member_no as memberNo, group_no as groupNo, order_no as orderNo, depth
+		  from board
+		 where no=#{no }			
+		]]>
+	</select>
+	
+	<delete id="delete" parameterType="map">
+		<![CDATA[
+		delete
+		  from board
+		 where no = #{no }
+		   and member_no = #{memberNo }
+		]]>
+	</delete>
+	
+	<update id="update" parameterType="BoardVo">
+		<![CDATA[
+		update board
+		   set title = #{title },
+		   	   content = #{content }
+         where no = #{no }
+           and member_no = #{memberNo }
+		]]>			
+	</update>
+		
+	<update id="updateViewCount" parameterType="long">
+		<![CDATA[
+		update board
+		   set view_cnt = view_cnt + 1		
+         where no = #{no }
+		]]>			
+	</update>
+	
+	<update id="updateOrderNo" parameterType="long">
+		<![CDATA[
+		update board
+		   set order_no = order_no + 1		
+         where order_no > #{parentOrderNo }
+		]]>			
+	</update>	
+	
 </mapper>

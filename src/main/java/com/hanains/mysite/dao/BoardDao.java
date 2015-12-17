@@ -1,57 +1,73 @@
 package com.hanains.mysite.dao;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StopWatch;
 
 import com.hanains.mysite.vo.BoardVo;
-import com.hanains.mysite.vo.UserVo;
+
+
 
 @Repository
 public class BoardDao {
+	
 	@Autowired
 	private SqlSession sqlSession;
-
-	public List<BoardVo> getList() {
-
-		List<BoardVo> list = sqlSession.selectList( "board.getList" );
+	
+	public void update( BoardVo vo ) {
+		sqlSession.update( "board.update", vo );
+	}
+	
+	public List<BoardVo> getList( String searchKeyword, Long page, Integer pageSize ) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put( "searchKeyword", searchKeyword );
+		map.put( "page", page );
+		map.put( "pageSize", pageSize );
+		
+		List<BoardVo> list = sqlSession.selectList( "board.selectList", map );
+		
 		return list;
 	}
 
+	public Long getCount( String searchKeyword ) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put( "searchKeyword", searchKeyword );
+		
+		Long count = sqlSession.selectOne( "board.selectCount", map );
+		
+		
+		
+		return count;
+	}	
 	
+	public void insert( BoardVo vo ) {
+		Long groupNo = vo.getGroupNo();
+		if( groupNo != null ) { // 답글인 경우
+			sqlSession.update( "board.updateOrderNo", vo.getOrderNo() );
+		}
+		
+		sqlSession.insert( "board.insert", vo );
+	}
 	
-
-	public void increaseViewCount( Long no ) {
-		sqlSession.update("board.increaseViewCount", no);
+	public void delete( Long no, Long memberNo ) {
+		Map<String, Long> map = new HashMap<String, Long>();
+		map.put( "no", no );
+		map.put( "memberNo", memberNo );
+		
+		sqlSession.delete( "board.delete", map );
+	}
+	
+	public void updateViewCount( Long no ) {
+		sqlSession.update( "board.updateViewCount", no );
 	}
 	
 	public BoardVo get( Long no ) {
-		BoardVo boardVo = 	sqlSession.selectOne("board.get", no);
-
-		return boardVo;
+		BoardVo vo = sqlSession.selectOne( "board.selectByNo", no );
+		return vo;
 	}
-
-	
-	public void update( BoardVo vo ) {
-		sqlSession.update("board.update", vo);	
-	}
-
-	public void delete( Long no ) {
-		sqlSession.delete("board.delete", no);
-	}
-
-	public void insert( BoardVo vo ) {
-		sqlSession.insert("board.insert", vo);
-	}
-
-
-
 }

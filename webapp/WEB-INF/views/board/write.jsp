@@ -35,7 +35,7 @@
 
 								 
 									<input type="file" 	name="uploadFile"	style="color: slategray; border: 1 solid silver; width: 300; height: 20">
-								(최대 4M) <input type="submit" value="전송">
+								(최대 4M)
 								
 							</td>
 
