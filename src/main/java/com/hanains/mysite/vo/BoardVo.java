@@ -9,6 +9,31 @@ public class BoardVo {
 	private String Regdate;
 	private String title;
 	private Long memberNo;
+	private Long groupNo;
+		private Long orderNo;
+	private Long depth;
+	
+	
+	
+	public Long getGroupNo() {
+		return groupNo;
+	}
+	public void setGroupNo(Long groupNo) {
+		this.groupNo = groupNo;
+	}
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	public Long getDepth() {
+		return depth;
+	}
+	public void setDepth(Long depth) {
+		this.depth = depth;
+	}
+
 	
 	
 	public Long getMemberNo() {

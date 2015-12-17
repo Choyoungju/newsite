@@ -70,7 +70,7 @@
     </select>
     
     
-    <insert id ="insert" parameterType="BoardVo">
+   <!--  <insert id ="insert" parameterType="BoardVo">
         
         <![CDATA[
         insert
@@ -80,7 +80,26 @@
         ]]>
         
     </insert>
+    -->
     
+    <insert id="insert" parameterType="BoardVo">
+		<![CDATA[
+		insert
+		  into board
+		]]>  
+		<choose>
+			<when test="groupNo == null">
+				<![CDATA[
+				values ( board_no_seq.nextval, #{title }, #{content }, #{memberNo }, 0, nvl( ( select max( group_no ) from board ), 0) + 1, 1, 1, SYSDATE )
+				]]>			 
+			</when>	
+			<otherwise>
+				<![CDATA[
+				values ( board_no_seq.nextval, #{title }, #{content }, #{memberNo }, 0, #{groupNo }, #{orderNo } + 1, #{depth } + 1, SYSDATE )
+				]]>		 
+			</otherwise>
+		</choose>
+	</insert>
     
     <delete id = "delete" parameterType = "BoardVo">
         

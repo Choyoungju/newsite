@@ -70,7 +70,7 @@ public class UserController {
 	
 
 	@RequestMapping( "/update" )
-	public String modify(  @ModelAttribute UserVo userVo ) {
+	public String modify(@ModelAttribute UserVo userVo ) {
 		
 		userService.update( userVo );
 		System.out.println("흠");

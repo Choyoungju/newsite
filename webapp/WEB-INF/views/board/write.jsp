@@ -16,7 +16,9 @@
 		<c:import url="/WEB-INF/views/include/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board/insert">
+				<!-- <form class="board-form" method="post" action="${pageContext.request.contextPath}/board/upload"> -->
+				<form class = "board-form" action="${pageContext.request.contextPath}/board/upload" method="post"
+									enctype="multipart/form-data">
 
 					<input type= "hidden" name="memberNo" value="${authUser.no}">
 					<table class="tbl-ex">
@@ -31,12 +33,10 @@
 							<td align="right" td class="label">파일첨부</td>
 							<td align="left" style="padding-left: 20; padding-right: 30">
 
-								<form action="upload.do" method="post"
-									enctype="multipart/form-data"></form> <input type="file"
-								name="uploadFile"
-								style="color: slategray; border: 1 solid silver; width: 300; height: 20">
+								 
+									<input type="file" 	name="uploadFile"	style="color: slategray; border: 1 solid silver; width: 300; height: 20">
 								(최대 4M) <input type="submit" value="전송">
-								</form>
+								
 							</td>
 
 
