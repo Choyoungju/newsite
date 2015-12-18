@@ -27,7 +27,7 @@
 						<th>글쓴이</th>
 						<th>조회수</th>
 						<th>작성일</th>
-						<th>&nbsp;</th>
+						<th>&nbsp;</th>  <!--  한칸 더 띄워줘야 쓰레기통 자리로 맞음 --> 
 					</tr>
 					<c:set var='count' value='${fn:length(listData.list) }' />				
 					<c:forEach items='${listData.list }' var='vo' varStatus='status'>

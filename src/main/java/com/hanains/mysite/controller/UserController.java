@@ -7,7 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.hanains.mysite.annotation.Auth;
+import com.hanains.mysite.annotation.AuthUser;
 import com.hanains.mysite.service.UserService;
 import com.hanains.mysite.vo.UserVo;
 
@@ -30,12 +33,7 @@ public class UserController {
 		return "/user/loginform";
 	}
 	
-	@RequestMapping("/modifyform")
-	public String modifyform(){
 
-		return "/user/modifyform";
-	}
-	
 	
 	@RequestMapping("/join")
 	public String join(@ModelAttribute UserVo vo){
@@ -69,21 +67,28 @@ public class UserController {
 	}
 	
 
-	@RequestMapping( "/update" )
-	public String modify(@ModelAttribute UserVo userVo ) {
-		
-		userService.update( userVo );
-		System.out.println("흠");
-		return "redirect:/";
-	}
-	
-//	@RequestMapping( "/modify" )
-//	public String modify(  UserVo authUser, @ModelAttribute UserVo userVo ) {
-//		userVo.setNo( authUser.getNo() );
+//	@RequestMapping( "/update" )
+//	public String modify(@ModelAttribute UserVo userVo ) {
+//		
 //		userService.update( userVo );
 //		System.out.println("흠");
 //		return "redirect:/";
 //	}
+	
+
+	@RequestMapping( value = "/modify", method = RequestMethod.POST )
+	public String modify( @AuthUser UserVo authUser, @ModelAttribute UserVo userVo ) {
+		userVo.setNo( authUser.getNo() );
+		userService.update( userVo );
+		return "redirect:/user/modifyform";
+	}
+
+	@RequestMapping( "/modifyform" )
+	public String modifyForm( @AuthUser UserVo authUser, Model model ) {
+		UserVo vo = userService.getUser( authUser.getNo() );
+		model.addAttribute( "vo", vo );
+		return "/user/modifyform";
+	}
 	
 	
 }

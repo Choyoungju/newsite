@@ -48,6 +48,13 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 		
+			<!-- spring aspect -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
 		<!-- jackson -->
 <dependency>
     <groupId>com.fasterxml.jackson.core</groupId>

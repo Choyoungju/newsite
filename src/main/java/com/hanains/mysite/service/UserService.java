@@ -22,14 +22,18 @@ public class UserService {
 		return authUser;
 	}
 	
-	
-	public void update(UserVo vo){
+
+	public void update( UserVo vo ) {
 		userDao.update(vo);
 	}
 	
-	
 	public UserVo getUser(String email){
 		UserVo userVo = userDao.get(email);
+		return userVo;
+	}
+	
+	public UserVo getUser(Long  no){
+		UserVo userVo = userDao.get(no);
 		return userVo;
 	}
 }

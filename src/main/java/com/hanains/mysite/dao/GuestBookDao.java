@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StopWatch;
 
 import com.hanains.mysite.vo.GuestBookVo;
 
@@ -91,10 +92,19 @@ public class GuestBookDao {
 //		}
 //		return list;
 //	}
+
 	
 	
 	public List<GuestBookVo> getList() {
+		
+		String taskName= "GuestBookDao.getList()";
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start(taskName);
+		
 		List<GuestBookVo> list = sqlSession.selectList( "guestbook.select" );
+		
+		stopWatch.stop();
+		System.out.println("Excution time : " + taskName + " " + stopWatch.getTotalTimeMillis());
 		return list;
 	}
 	

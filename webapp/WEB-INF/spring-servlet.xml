@@ -8,6 +8,10 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd"
 	xmlns:mvc="http://www.springframework.org/schema/mvc">
 
+
+<aop:aspectj-autoproxy />
+
+
 	<mvc:default-servlet-handler />
 
 
@@ -57,6 +61,11 @@
 		<property name="defaultEncoding" value="utf-8" />
 	</bean>
 
+
+
+<bean id="fileViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+    <property name="order" value="0" />
+</bean> 
 
 
 	<bean id="viewResolver"

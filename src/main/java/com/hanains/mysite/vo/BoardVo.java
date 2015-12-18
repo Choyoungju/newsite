@@ -10,11 +10,11 @@ public class BoardVo {
 	private String title;
 	private Long memberNo;
 	private Long groupNo;
-		private Long orderNo;
+	private Long orderNo;
 	private Long depth;
-	
-	
-	
+
+
+
 	public Long getGroupNo() {
 		return groupNo;
 	}
@@ -34,8 +34,8 @@ public class BoardVo {
 		this.depth = depth;
 	}
 
-	
-	
+
+
 	public Long getMemberNo() {
 		return memberNo;
 	}
@@ -78,7 +78,7 @@ public class BoardVo {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-	
-	
+
+
+
 }

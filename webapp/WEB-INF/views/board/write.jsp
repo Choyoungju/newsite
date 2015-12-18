@@ -21,6 +21,11 @@
 									enctype="multipart/form-data">
 
 					<input type= "hidden" name="memberNo" value="${authUser.no}">
+					<input type="hidden" name="groupNo" value="${vo.groupNo }">
+					<input type="hidden" name="orderNo" value="${vo.orderNo }">
+					<input type="hidden" name="depth" value="${vo.depth }">   
+					<!-- 이게 없어서 계쏙 계층형 안됐음 -->
+					
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>
@@ -30,7 +35,7 @@
 							<td><input type="text" name="title" value=""></td>
 						</tr>
 						<tr>
-							<td align="right" td class="label">파일첨부</td>
+							<td align="right" class="label">파일첨부</td>
 							<td align="left" style="padding-left: 20; padding-right: 30">
 
 								 

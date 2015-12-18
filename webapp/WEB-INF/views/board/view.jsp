@@ -44,7 +44,9 @@
 				</table>
 				<div class="bottom">
 					<a href="${pageContext.request.contextPath}/board/">글목록</a>
+					<c:if test='${authUser.no == vo.memberNo }'>
 					<a href="${pageContext.request.contextPath}/board/modify/${vo.no }">글수정</a>
+					</c:if>
 					<c:if test='${not empty authUser }'>
 						<a href="${pageContext.request.contextPath}/board/reply/${vo.no }">답글</a>
 					</c:if>
