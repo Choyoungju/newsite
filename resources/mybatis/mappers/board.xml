@@ -11,12 +11,12 @@
 		<choose>
 			<when test="groupNo == null">
 				<![CDATA[
-				values ( board_no_seq.nextval, #{title }, #{content }, #{memberNo }, 0, nvl( ( select max( group_no ) from board ), 0) + 1, 1, 1, SYSDATE )
+				values ( board_no_seq.nextval,  #{title }, #{content }, #{memberNo }, 0, nvl( ( select max( group_no ) from board ), 0) + 1, 1, 1, SYSDATE , #{filename})
 				]]>			 
 			</when>
 			<otherwise>
 				<![CDATA[
-				values ( board_no_seq.nextval, #{title }, #{content }, #{memberNo }, 0, #{groupNo }, #{orderNo } + 1, #{depth } + 1, SYSDATE )
+				values ( board_no_seq.nextval, #{title }, #{content }, #{memberNo }, 0, #{groupNo }, #{orderNo } + 1, #{depth } + 1, SYSDATE,  #{filename} )
 				]]>		 
 			</otherwise>
 		</choose>
@@ -55,7 +55,7 @@
 		
 	<select id="selectByNo" resultType="BoardVo" parameterType="long">
 		<![CDATA[
-		select no, title, content, member_no as memberNo, group_no as groupNo, order_no as orderNo, depth
+		select no, title,filename ,content, member_no as memberNo, group_no as groupNo, order_no as orderNo, depth
 		  from board
 		 where no=#{no }			
 		]]>

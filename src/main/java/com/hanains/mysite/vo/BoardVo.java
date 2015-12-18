@@ -12,9 +12,15 @@ public class BoardVo {
 	private Long groupNo;
 	private Long orderNo;
 	private Long depth;
+	private String filename;
 
 
-
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
 	public Long getGroupNo() {
 		return groupNo;
 	}

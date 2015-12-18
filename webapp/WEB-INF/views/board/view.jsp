@@ -34,13 +34,14 @@
 							</div>
 						</td>
 					</tr>
+					<tr>
+						<td>첨부파일</td>
+						<td>
+							<a href="${pageContext.request.contextPath}${vo.filename }">다운받기</a>
+						</td>	
 					
-					   <td align="right" td class = "label"> 파일첨부</td>
-    <td align="left" style="padding-left: 20; padding-right: 30">
-             <input type="file" name="attachFile" style="color:slategray;border:1 solid silver;width:300; height:20"> (최대 4M)</td>
-</tr>
-
-
+					</tr>
+					
 				</table>
 				<div class="bottom">
 					<a href="${pageContext.request.contextPath}/board/">글목록</a>

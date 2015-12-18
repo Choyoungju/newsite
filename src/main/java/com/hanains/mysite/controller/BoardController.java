@@ -140,7 +140,7 @@ public class BoardController {
 	        model.addAttribute( "profileUrl", url );
 	        
 	        System.out.println("업로드 리퀘스트 매핑");
-	       
+	       vo.setFilename(url);
 		}
 		
 		boardService.writeBoard(vo);
