@@ -31,6 +31,8 @@ public class BoardController {
 	private static final Log LOG = LogFactory.getLog( BoardController.class );
 	private static final String SAVE_PATH = "/temp/";
 	
+	
+	
 	// 리스트 요청
 	@RequestMapping( "" )
 	public String list( 
@@ -40,6 +42,9 @@ public class BoardController {
 		
 		Map<String, Object> map = boardService.listBoard( searchKeyword, page );
 		model.addAttribute( "listData", map );
+		LOG.warn( "######### 리스트" );
+		
+	
 		
 		return "/board/list";
 	}
@@ -48,6 +53,8 @@ public class BoardController {
 	@Auth
 	@RequestMapping( "/write" )
 	public String write() {
+		
+		LOG.warn( "######### 입력" );
 		// 로그인 사용자 체크
 		return "/board/write";
 	}
@@ -58,6 +65,7 @@ public class BoardController {
 	public String reply( @PathVariable( "no" ) Long no, Model model ) {
 		BoardVo vo = boardService.viewBoard( no );
 		model.addAttribute( "vo", vo );
+		LOG.warn( "######### 답글" );
 		return "/board/write";
 	}
 	
@@ -74,7 +82,7 @@ public class BoardController {
 		if(vo.getContent().trim().length()==0 ||vo.getTitle().trim().length()==0) {
 			return "redirect:/board/insert?result=fail";
 		}
-		
+		LOG.warn( "######### 삽입" );
 		return "redirect:/board/upload";
 	}
 	
@@ -84,6 +92,7 @@ public class BoardController {
 	public String modify( @PathVariable( "no" ) Long no, Model model ) {
 		BoardVo vo = boardService.viewBoard( no );
 		model.addAttribute( "vo", vo );
+		LOG.warn( "######### 수정" );
 		return "/board/modify";
 	}
 	
@@ -93,6 +102,7 @@ public class BoardController {
 	public String update( @AuthUser UserVo authUser, @ModelAttribute BoardVo vo ) {
 		vo.setMemberNo( authUser.getNo() );
 		boardService.updateBoard( vo );
+		LOG.warn( "######### 업데이트" );
 		return "redirect:/board";
 	}
 	
@@ -101,6 +111,7 @@ public class BoardController {
 	@RequestMapping( "/delete/{no}" )
 	public String delete( @AuthUser UserVo authUser, @PathVariable( "no" ) Long no ) {
 		boardService.deleteBoard( no, authUser.getNo() );
+		LOG.warn( "######### 삭제" );
 		return "redirect:/board";
 	}	
 	
@@ -109,6 +120,7 @@ public class BoardController {
 	public String view( @PathVariable( "no" ) Long no, Model model ) {
 		BoardVo vo = boardService.viewBoard( no );
 		model.addAttribute( "vo", vo );
+		LOG.warn( "######### 글 읽기" );
 		return "/board/view";
 	}
 	
@@ -152,6 +164,7 @@ public class BoardController {
 		}
 		
 		boardService.writeBoard(vo);
+		LOG.warn( "######### 파일 업로드 관련" );
         return "redirect:/board/";
 	}
 	

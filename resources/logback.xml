@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>
+				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n
+			</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="fileAppender2" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/logging/log2.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>
+				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n
+			</Pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>/logging/log2.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>1MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	
+	<appender name="fileAppender3" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/logging/log3.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>
+				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n
+			</Pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>/logging/log3.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>50KB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>	
+
+
+
+
+	<!--
+		com.hanains.logging2 아래 패키지 로그들만 
+		/logging/logging2.log 파일에 출력하는 로거
+	-->
+	<logger name="com.hanains.mysite" level="INFO" additivity="false">
+            <appender-ref ref="fileAppender2" />
+    </logger>
+    
+	<!--
+		com.hanains.logging3 아래 패키지 로그들만 
+		/logging/logging3.log 파일에 출력하는 로거
+	-->
+	<logger name="com.hanains.mysite"  level="WARN" additivity="false">
+            <appender-ref ref="fileAppender3" />
+			<appender-ref ref="consoleAppender" />
+    </logger>    
+	
+	<!-- 루트(글로벌) 로거 -->
+	<root level="INFO">
+		<appender-ref ref="consoleAppender" />
+	</root>
+</configuration>
