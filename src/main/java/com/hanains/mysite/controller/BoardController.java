@@ -71,6 +71,10 @@ public class BoardController {
 		vo.setMemberNo( authUser.getNo() );
 		boardService.writeBoard( vo );
 		
+		if(vo.getContent().trim().length()==0 ||vo.getTitle().trim().length()==0) {
+			return "redirect:/board/insert?result=fail";
+		}
+		
 		return "redirect:/board/upload";
 	}
 	
@@ -116,7 +120,9 @@ public class BoardController {
         
 
 		System.out.println("업로드 리퀘스트 매핑은 불러오는데 파일 빔");
-		
+		if(vo.getContent().trim().length()==0 ||vo.getTitle().trim().length()==0) {
+			return "redirect:/board/write?result=fail";
+		}
 		
 		// 파일 처리
 		if( multipartFile.isEmpty() == false ) {
@@ -141,6 +147,8 @@ public class BoardController {
 	        
 	        System.out.println("업로드 리퀘스트 매핑");
 	       vo.setFilename(url);
+		}else{
+			vo.setFilename("");
 		}
 		
 		boardService.writeBoard(vo);

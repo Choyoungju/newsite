@@ -34,6 +34,7 @@
 							</div>
 						</td>
 					</tr>
+					<c:if test = "${not empty vo.filename }">
 					<tr>
 						<td>첨부파일</td>
 						<td>
@@ -41,7 +42,7 @@
 						</td>	
 					
 					</tr>
-					
+					</c:if>
 				</table>
 				<div class="bottom">
 					<a href="${pageContext.request.contextPath}/board/">글목록</a>

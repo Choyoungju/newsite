@@ -15,25 +15,45 @@ pageContext.setAttribute("newLine","\n");
 <head>
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link href="${pageContext.request.contextPath}/assets/css/guestbook.css" rel="stylesheet"
-	type="text/css">
+<link href="${pageContext.request.contextPath}/assets/css/guestbook.css"
+	rel="stylesheet" type="text/css">
+
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/assets/js/jquery/jquery-1.9.0.js"></script>
+
+
+
+
+<c:if test="${param.result == 'fail'}">
+	<script>
+		$(function() {
+			alert("빈칸을 채워주세요.");
+		});
+	</script>
+</c:if>
+
+
+
 </head>
 <body>
 	<div id="container">
-		<c:import url ="/WEB-INF/views/include/header.jsp"/>
+		<c:import url="/WEB-INF/views/include/header.jsp" />
 		<div id="content">
 			<div id="guestbook">
-				<form action="${pageContext.request.contextPath}/guestbook/insert" method="post">
+				<form id="guestbook-form"
+					action="${pageContext.request.contextPath}/guestbook/insert"
+					method="post">
 					<input type="hidden" name="a" value="insert">
 					<table>
 						<tr>
 							<td>이름</td>
-							<td><input type="text" name="name"></td>
+							<td><input type="text" name="name" id="name"></td>
 							<td>비밀번호</td>
-							<td><input type="password" name="password"></td>
+							<td><input type="password" name="password" id="password"></td>
 						</tr>
 						<tr>
-							<td colspan=4><textarea name="message" id="content"></textarea></td>
+							<td colspan=4><textarea name="message" id="content"
+									id="content"></textarea></td>
 						</tr>
 						<tr>
 							<td colspan=4 align=right><input type="submit" VALUE=" 확인 "></td>
@@ -53,7 +73,8 @@ pageContext.setAttribute("newLine","\n");
 							<td>${count-status.index }</td>
 							<td>${vo.name}</td>
 							<td>${vo.reg_date}</td>
-							<td><a href="${pageContext.request.contextPath}/guestbook/deleteform?id=${vo.no}">삭제</a></td>
+							<td><a
+								href="${pageContext.request.contextPath}/guestbook/deleteform?id=${vo.no}">삭제</a></td>
 						</tr>
 						<tr>
 							<!-- <td colspan=4><!%=vo.getMessage().replaceAll("\n", "<br/>") %></td> -->
@@ -64,8 +85,8 @@ pageContext.setAttribute("newLine","\n");
 
 			</div>
 		</div>
-		<c:import url ="/WEB-INF/views/include/navigation.jsp"/>
-		<c:import url ="/WEB-INF/views/include/footer.jsp"/>
+		<c:import url="/WEB-INF/views/include/navigation.jsp" />
+		<c:import url="/WEB-INF/views/include/footer.jsp" />
 	</div>
 </body>
 </html>

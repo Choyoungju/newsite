@@ -10,6 +10,18 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${pageContext.request.contextPath}/assets/css/board.css" rel="stylesheet"
 	type="text/css">
+		<script type="text/javascript"
+	src="${pageContext.request.contextPath}/assets/js/jquery/jquery-1.9.0.js"></script>
+	
+	<c:if test="${param.result == 'fail'}">
+	<script>
+		$(function() {
+			alert("빈칸을 채워주세요.");
+		});
+	</script>
+</c:if>
+
+
 </head>
 <body>
 	<div id="container">

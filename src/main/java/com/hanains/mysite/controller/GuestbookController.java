@@ -39,6 +39,11 @@ public class GuestbookController {
 	
 	@RequestMapping( "/insert" )
 	public String insert( @ModelAttribute GuestBookVo vo ) {
+
+		if(vo.getMessage().trim().length()==0 ||vo.getName().trim().length()==0 || vo.getPassword().trim().length()==0){
+			return "redirect:/guestbook?result=fail";
+		}
+		
 		guestbookService.write( vo );
 
 		return "redirect:/guestbook";

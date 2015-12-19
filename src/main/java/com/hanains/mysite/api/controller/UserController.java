@@ -40,7 +40,7 @@ public class UserController {
 	}
 
 	@ResponseBody
-	@RequestMapping("checkemail")
+	@RequestMapping("/checkemail")
 	public Object checkEmail(@RequestParam(value="email", required=true, defaultValue="") String email){
 		
 	UserVo vo = userService.getUser(email);
