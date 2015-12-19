@@ -8,7 +8,7 @@ title        VARCHAR2(200) NOT NULL,
 content      VARCHAR2(4000) NOT NULL,
 member_no    NUMBER(8),
 view_cnt     NUMBER(10),
-reg_date     DATE NOT NULL
+reg_date     DATE NOT NULL,
 FILENAME     VARCHAR2(200)
 );
 
